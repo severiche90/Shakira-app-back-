@@ -7,6 +7,8 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
         "node_modules": true,
-        "package-*.json": true
-        }   
+        "package-*.json": true,
+        },   
+        "editor.wordWrap": "on"
+
 }

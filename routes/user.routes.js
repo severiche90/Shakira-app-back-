@@ -9,7 +9,6 @@ export default class UsersRoutes extends routes {
         this.getRoutes();
     }
 
-
     getRoutes() {
         this.router
             .get('/', this.controller.getAllUsers)
