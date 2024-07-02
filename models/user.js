@@ -1,6 +1,7 @@
 export default class User {
 
-    constructor(dni, nombre, apellido, correo_electronico){
+    constructor(id, dni, nombre, apellido, correo_electronico){
+        this.id = id;
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;

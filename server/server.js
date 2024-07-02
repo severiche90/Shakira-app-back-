@@ -21,9 +21,9 @@ export default class Server {
     }
 
     static run (port) {
-        Server.runServer(port);
-        Server.routes();
         Server.middlewares();
+        Server.routes();
+        Server.runServer(port);
     }
 
 

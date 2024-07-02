@@ -13,7 +13,11 @@ export default class UsersRoutes extends routes {
     getRoutes() {
         this.router
             .get('/', this.controller.getAllUsers)
-
+            .get('/dni/:dni', this.controller.getUserByDni)
+            .get('/:id', this.controller.getUserById)
+            .post('/', this.controller.createUser)
+            .put('/', this.controller.updateUser)
+            .delete('/:id', this.controller.deleteUser)
     }
 
 }
