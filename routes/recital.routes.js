@@ -12,7 +12,7 @@ export default class RecitalRoutes extends routes {
         getRoutes() {
             this.router
                 .get('/', this.controller.getAllRecitales)
-                .get('/stock', this.controller.getRecitalesByStock)
+                // .get('/stock', this.controller.getRecitalesByStock)
                 .get('/:id', this.controller.getRecitalesById)
                 // .post('/', this.controller.createUser)
                 // .put('/', this.controller.updateUser)
