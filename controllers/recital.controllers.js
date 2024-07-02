@@ -13,6 +13,13 @@ export default class RecitalControllers {
         res.status(200).json(recitales);
     }
 
+    getRecitalesById = async (req,res) => {
+        const id = req.params.id;
+        const recital = await this.recitaldb.getRecitalesById(id);
+        res.status(200).json(recital);
+
+    }
+
 
 
 }
