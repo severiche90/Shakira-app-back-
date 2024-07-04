@@ -15,8 +15,8 @@ export default class CompraRoutes extends routes {
                 // .get('/stock', this.controller.getRecitalesByStock)
                 .get('/:id', this.controller.getCompraById)
                 .post('/', this.controller.createCompra)
-                // .put('/', this.controller.updateUser)
-                // .delete('/:id', this.controller.deleteUser)
+                .put('/', this.controller.updateCompra)
+                .delete('/:id', this.controller.deleteCompra)
         }
 
 

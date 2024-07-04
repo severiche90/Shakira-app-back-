@@ -31,7 +31,7 @@ export default class CompraControllers {
         if (!codigo_perfume && !codigo_recital) {
             res.status(400).json({ error: 'Debe proporcionar un código de perfume o recital para crear una compra.' });
             return;
-        }
+        } 
         
         let compraData;
 
@@ -46,6 +46,18 @@ export default class CompraControllers {
         res.status(201).json(compraData);
     }
 
+    updateCompra = async (req,res) => {
+        const compra = this.helpers.parseCompra(req.body);
+        const result = await this.compradb.updateCompra(compra);
+        res.status(200).json(result);
+    }
+
+
+    deleteCompra = async (req,res) => {
+        const id = req.params.id;
+        const result = await this.compradb.deleteCompra(id);
+        res.status(200).json(result);
+    }
 
 }
 

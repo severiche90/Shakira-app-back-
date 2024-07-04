@@ -5,6 +5,7 @@ export default class CompraDaoMysql extends Mysql {
     constructor() {
         super();
         this.table = 'compras';
+        this.oldCompra = {};
     }
 
     async getAllCompras() {
@@ -24,7 +25,7 @@ export default class CompraDaoMysql extends Mysql {
     async createCompraWithBoth(dni, codigo_perfume, codigo_recital) {
         const perfumeQuery = `SELECT * FROM PERFUMES WHERE codigo_perfume = ?`;
         const [perfume] = await this.connection.promise().query(perfumeQuery, [codigo_perfume]);
-        
+
         if (!perfume.length) {
             throw new Error('Perfume no encontrado.');
         }
@@ -45,11 +46,11 @@ export default class CompraDaoMysql extends Mysql {
 
         const fecha_de_compra = new Date().toISOString().slice(0, 10);
         const precio_perfume = perfume[0].precio_perfume;
-        const precio_entrada_recital = recital[0].precio_entrada;
-        const monto_total = precio_perfume + precio_entrada_recital;
+        const precio_entrada = recital[0].precio_entrada;
+        const monto_total = precio_perfume + precio_entrada;
 
-        const compraQuery = `INSERT INTO ${this.table} (fecha_de_compra, dni_cliente, codigo_perfume, codigo_recital, precio_perfume, precio_entrada_recital, monto_total) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-        const [result] = await this.connection.promise().query(compraQuery, [fecha_de_compra, dni, codigo_perfume, codigo_recital, precio_perfume, precio_entrada_recital, monto_total]);
+        const compraQuery = `INSERT INTO ${this.table} (fecha_de_compra, dni_cliente, codigo_perfume, codigo_recital, precio_perfume, precio_entrada, monto_total) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+        const [result] = await this.connection.promise().query(compraQuery, [fecha_de_compra, dni, codigo_perfume, codigo_recital, precio_perfume, precio_entrada, monto_total]);
 
         return {
             numero_de_compra: result.insertId,
@@ -58,16 +59,16 @@ export default class CompraDaoMysql extends Mysql {
             codigo_perfume,
             codigo_recital,
             precio_perfume,
-            precio_entrada_recital,
+            precio_entrada,
             monto_total
         };
-    
+
     }
 
     async createCompraWithPerfume(dni, codigo_perfume) {
         const perfumeQuery = `SELECT * FROM PERFUMES WHERE codigo_perfume = ?`;
         const [perfume] = await this.connection.promise().query(perfumeQuery, [codigo_perfume]);
-        
+
         if (!perfume.length) {
             throw new Error('Perfume no encontrado.');
         }
@@ -85,7 +86,7 @@ export default class CompraDaoMysql extends Mysql {
 
         const compraQuery = `INSERT INTO COMPRAS (fecha_de_compra, dni_cliente, codigo_perfume, precio_perfume, monto_total) VALUES (?, ?, ?, ?, ?)`;
         const [result] = await this.connection.promise().query(compraQuery, [fecha_de_compra, dni, codigo_perfume, precio_perfume, monto_total]);
-        
+
 
         return {
             numero_de_compra: result.insertId,
@@ -113,28 +114,79 @@ export default class CompraDaoMysql extends Mysql {
         }
 
         const fecha_de_compra = new Date().toISOString().slice(0, 10);
-        const precio_entrada_recital = recital[0].precio_entrada;
-        const monto_total = precio_entrada_recital;
+        const precio_entrada = recital[0].precio_entrada;
+        const monto_total = precio_entrada;
 
-        const compraQuery = `INSERT INTO COMPRAS (fecha_de_compra, dni_cliente, codigo_recital, precio_entrada_recital, monto_total) VALUES (?, ?, ?, ?, ?)`;
-        const [result] = await this.connection.promise().query(compraQuery, [fecha_de_compra, dni, codigo_recital, precio_entrada_recital, monto_total]);
+        const compraQuery = `INSERT INTO COMPRAS (fecha_de_compra, dni_cliente, codigo_recital, precio_entrada, monto_total) VALUES (?, ?, ?, ?, ?)`;
+        const [result] = await this.connection.promise().query(compraQuery, [fecha_de_compra, dni, codigo_recital, precio_entrada, monto_total]);
 
         return {
             numero_de_compra: result.insertId,
             fecha_de_compra,
             dni_cliente: dni,
             codigo_recital,
-            precio_entrada_recital,
+            precio_entrada,
             monto_total
         };
     }
-    
-    async createCompra(numero_de_compra ,fecha_de_compra, dni, codigo_perfume ,codigo_recital, precio_perfume,  precio_entrada_recital, monto_total) {
-        const query = `INSERT INTO ${this.table} (numero_de_compra, fecha_de_compra, dni_cliente, codigo_perfume,codigo_recital, precio_perfume, precio_entrada_recital, monto_total) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-        const [result] = await this.connection.promise().query(query, [numero_de_compra, fecha_de_compra, dni, codigo_perfume, codigo_recital, precio_perfume, precio_entrada_recital, monto_total]);
+
+    async createCompra(numero_de_compra, fecha_de_compra, dni, codigo_perfume, codigo_recital, precio_perfume, precio_entrada, monto_total) {
+        const query = `INSERT INTO ${this.table} (numero_de_compra, fecha_de_compra, dni_cliente, codigo_perfume,codigo_recital, precio_perfume, precio_entrada, monto_total) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+        const [result] = await this.connection.promise().query(query, [numero_de_compra, fecha_de_compra, dni, codigo_perfume, codigo_recital, precio_perfume, precio_entrada, monto_total]);
         return result.insertId;
     }
 
-}
+    async updateCompra(compra) {
+        let perfumeData, recitalData;
 
+        // Verificar si el código de perfume ha cambiado
+        if (compra.codigo_perfume !== this.oldCompra.codigo_perfume) {
+            // Obtener el precio actualizado del perfume
+            const perfumeQuery = `
+            SELECT precio_perfume
+            FROM perfumes
+            WHERE codigo_perfume =?`;
+            [[perfumeData]] = await this.connection.promise().query(perfumeQuery, [compra.codigo_perfume]);
+        }
+
+        // Verificar si el código de recital ha cambiado
+        if (compra.codigo_recital !== this.oldCompra.codigo_recital) {
+            // Obtener el precio actualizado del recital
+            const recitalQuery = `
+            SELECT precio_entrada
+            FROM recitales
+            WHERE codigo_recital =?`;
+            [[recitalData]] = await this.connection.promise().query(recitalQuery, [compra.codigo_recital]);
+            console.log(recitalData);
+        }
+
+        // Actualizar el precio en la tabla "compras"
+        const query = `UPDATE ${this.table} SET 
+                        codigo_perfume =?, 
+                        codigo_recital =?, 
+                        precio_perfume =?, 
+                        precio_entrada =?
+                        WHERE id =?`;
+        const [result] = await this.connection.promise().query(query, [
+            compra.codigo_perfume,
+            compra.codigo_recital,
+            perfumeData ? perfumeData.precio_perfume : this.oldCompra.precio_perfume,
+            recitalData ? recitalData.precio_entrada : this.oldCompra.precio_entrada,
+            compra.id]);
+
+            const montoTotal = (perfumeData? perfumeData.precio_perfume : 0) + (recitalData? recitalData.precio_entrada : 0);
+            const updateMontoTotalQuery = `UPDATE ${this.table} SET monto_total =? WHERE id =?`;
+            await this.connection.promise().query(updateMontoTotalQuery, [montoTotal, compra.id]);
+
+        return result;
+    }
+
+    async deleteCompra (id) {
+        const query = `DELETE FROM ${this.table} WHERE id = ${id}`;
+        const [result] = await this.connection.promise().query(query);
+        return result;
+    }
+
+
+}
 
