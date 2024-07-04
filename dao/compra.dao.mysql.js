@@ -139,9 +139,9 @@ export default class CompraDaoMysql extends Mysql {
     async updateCompra(compra) {
         let perfumeData, recitalData;
 
-        // Verificar si el código de perfume ha cambiado
+        
         if (compra.codigo_perfume !== this.oldCompra.codigo_perfume) {
-            // Obtener el precio actualizado del perfume
+            
             const perfumeQuery = `
             SELECT precio_perfume
             FROM perfumes
@@ -149,9 +149,9 @@ export default class CompraDaoMysql extends Mysql {
             [[perfumeData]] = await this.connection.promise().query(perfumeQuery, [compra.codigo_perfume]);
         }
 
-        // Verificar si el código de recital ha cambiado
+        
         if (compra.codigo_recital !== this.oldCompra.codigo_recital) {
-            // Obtener el precio actualizado del recital
+            
             const recitalQuery = `
             SELECT precio_entrada
             FROM recitales
@@ -160,7 +160,7 @@ export default class CompraDaoMysql extends Mysql {
             console.log(recitalData);
         }
 
-        // Actualizar el precio en la tabla "compras"
+        
         const query = `UPDATE ${this.table} SET 
                         codigo_perfume =?, 
                         codigo_recital =?, 
