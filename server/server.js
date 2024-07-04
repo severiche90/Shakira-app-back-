@@ -1,7 +1,6 @@
 import express, { urlencoded } from 'express';
 import UsersRoutes from '../routes/user.routes.js';
-import Recital from './../models/recital.js';
-import RecitalRoutes from '../routes/recital.routes.js';
+import CompraRoutes from '../routes/compra.routes.js';
 
 export default class Server {
 
@@ -19,9 +18,9 @@ export default class Server {
 
     static routes() {
         const users = new UsersRoutes();
-        const recital = new RecitalRoutes(); 
+        const compras = new CompraRoutes();
         Server.app.use('/usuarios', users.router);
-        Server.app.use('/recitales', recital.router)
+        Server.app.use('/compras', compras.router);
     }
 
     static run (port) {
