@@ -1,0 +1,241 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    box-sizing: border-box;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    scroll-behavior: smooth;
+}
+
+header {
+    background-color: black;
+    width: 100%;
+    padding: 30px 0;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.nav {
+    display: flex;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rotate {
+    border-radius: 50%;
+    width: 65px;
+    animation: rotateAnimation 6s infinite linear;
+    left: 600px;
+}
+
+.rotate2 {
+    border-radius: 50%;
+    width: 65px;
+    animation: rotateAnimation 6s infinite linear;
+    right: 600px;
+}
+
+
+
+@keyframes rotateAnimation {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+
+.menu-container-list {
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-container-item {
+    letter-spacing: 5px;
+    font-weight: 690;
+    transition: background 3s ease;
+}
+
+
+.menu-item {
+    border: 1px solid #f66b40;
+    padding: 10px;
+    background-color: black;
+    color: #f66b40;
+    text-shadow: 0px 0px 9px #f66b40;
+    text-transform: uppercase;
+    border-radius: 50px;
+    margin: 10px 20px;
+}
+
+.menu-item:hover {
+    background: #ffefc1;
+}
+
+body {
+    background-image: url(./img/ShakiraFondo.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    letter-spacing: 1px;
+    height: fit-content;
+}
+
+
+
+
+h1,
+h2 {
+    font-size: 50px;
+    color: #ffefc1;
+    font-family: Helvetica, Arial, sans-serif;
+    text-decoration: underline;
+    text-shadow: 0px 0px 9px #f66b40;
+    text-align: center;
+    margin: 50px;
+}
+
+
+
+
+
+.album {
+    height: 350px;
+    width: 350px;
+    max-width: 100%;
+    border-radius: 10px;
+    margin: 15px;
+
+}
+
+.album:hover {
+    transform: scale(1.2);
+    transition: transform 0.5s ease-in-out;
+}
+
+
+.imagenes_album {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    justify-items: center;
+    align-items: center;
+
+}
+
+@media screen and (max-width: 1200px) {
+    .imagenes_album {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media screen and (max-width: 768px) {
+        .imagenes_album {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+
+.videosShakira {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    justify-items: center;
+    align-items: center;
+    margin: 70px;
+}
+
+iframe {
+    border-radius: 5%;
+}
+
+@media screen and (max-width: 1200px) {
+    .videosShakira {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    @media screen and (max-width: 768px) {
+        .videosShakira {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+
+footer {
+
+    color: #ffefc1;
+    text-shadow: 0px 0px 9px #f66b40;
+    background-color: black;
+    text-align: center;
+    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+
+}
+
+h3 {
+    text-decoration: underline;
+}
+
+i {
+    color: #ffefc1;
+    font-size: 18px;
+    text-align: center;
+    margin: 20px;
+    border-radius: 10%;
+    padding: 15px;
+}
+
+.fa-youtube:hover {
+    background-color: red;
+    color: white;
+    box-shadow: 0 0px 40px red;
+}
+
+.fa-facebook-f:hover {
+    background-color: #1877f2;
+    color: white;
+    box-shadow: 0 0px 40px #1877f2;
+}
+
+.fa-instagram:hover {
+    background-color: #D43089;
+    color: white;
+    box-shadow: 0 0px 40px #D43089;
+}
+
+.fa-spotify:hover {
+    background-color: #1DB954;
+    color: white;
+    box-shadow: 0 0px 40px #1DB954;
+}
+
+.fa-twitter:hover {
+    background-color: #1DA1F2;
+    color: white;
+    box-shadow: 0 0px 40px #1DA1F2;
+}
+
+.fa-tiktok:hover {
+    background-color: #25F4EE;
+    color: white;
+    box-shadow: 0 0px 40px #25F4EE;
+}
+
+.fa-apple:hover {
+    background-color: #fc3c44;
+    color: white;
+    box-shadow: 0 0px 40px #fc3c44;
+}
